@@ -4,14 +4,15 @@
   "description": "this is the backend of our Social network app ",
   "main": "server.js",
   "scripts": {
-    "start":"node server.js",
-    "server":"nodemon server.js"
+    "start": "node server.js",
+    "server": "nodemon server.js"
   },
   "author": "Chouaib&Abire",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
     "concurrently": "^6.0.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mongoose": "^5.12.3"
   },
