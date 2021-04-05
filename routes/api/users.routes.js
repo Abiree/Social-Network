@@ -1,18 +1,14 @@
 const express = require('express');
 const router = express.Router();
 //include controller
-const auth = require('../../controller/authentification');
+const userCont = require('../../controller/userController');
 
 //routes
 //get
-router.get('/',(req,res)=>{
-
-});
-router.get('/:id',(req,res)=>{
-
-});
+router.get('/',userCont.getAllUsers);
+router.get('/:id', userCont.getUser);
 //post
-router.post('/signup',auth.signUp);
+router.post('/signup',userCont.signUp);
 //put
 router.put('/:id',(req,res)=>{
 
