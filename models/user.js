@@ -28,7 +28,8 @@ const userSchema = new Schema({
     },
     biographie:{
         type : String,
-        maxlength : 1024
+        maxlength : 1024,
+        default : ""
     },
     avatar:{
         type : String,
