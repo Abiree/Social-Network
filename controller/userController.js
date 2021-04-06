@@ -79,3 +79,27 @@ module.exports.deleteUser = async(req,res)=>{
         }    
     }  
 }
+
+module.exports.sendInvitation = async(req,res)=>{
+    //on parametre on pass id de la personne à inviter 
+    //on body l'id de la personne qui passer l'invitation
+    if(!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.id)){
+        res.status(400).send('Unkown Id : ');
+    }  
+    else{
+        try {
+            const user = await userSchema.findByIdAndUpdate(
+                req.params.id,
+                {
+                    $addToSet:{invitationlist:req.body.id}
+                },
+                {
+                    new: true
+                }
+            );
+            res.status(200).send(user);
+        } catch {
+            err=> res.status(500).send(err.message);
+        }    
+    }  
+}

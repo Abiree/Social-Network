@@ -38,6 +38,9 @@ const userSchema = new Schema({
     friendlist:{
         type : [String]
     },
+    invitationlist: {
+        type : [String]
+    }
 },
 { 
     timestamps: true 

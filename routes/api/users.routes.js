@@ -14,6 +14,7 @@ router.put('/:id', userCont.updateUser);
 router.patch('/friends/:id',(req,res)=>{
 
 });
+router.patch('/invitations/:id',userCont.sendInvitation);
 //delete
 router.delete('/:id',userCont.deleteUser);
 
