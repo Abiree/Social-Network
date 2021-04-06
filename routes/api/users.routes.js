@@ -15,9 +15,7 @@ router.patch('/friends/:id',(req,res)=>{
 
 });
 //delete
-router.delete('/:id',(req,res)=>{
-
-});
+router.delete('/:id',userCont.deleteUser);
 
 
 module.exports=router;

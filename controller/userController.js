@@ -62,4 +62,20 @@ module.exports.updateUser = async(req,res)=>{
     }
 }
 
-
+module.exports.deleteUser = async(req,res)=>{
+    if(!ObjectId.isValid(req.params.id)){
+        res.status(400).send('Unkown Id :');
+    }  
+    else{
+        try {
+            await userSchema.findOneAndDelete(
+                {
+                    _id:req.params.id
+                }
+            );
+            res.status(200).json({id:req.params.id,message:'has been deleted'});
+        } catch {
+            err=> res.status(500).send(err.message);
+        }    
+    }  
+}
