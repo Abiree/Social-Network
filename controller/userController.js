@@ -87,19 +87,65 @@ module.exports.sendInvitation = async(req,res)=>{
         res.status(400).send('Unkown Id : ');
     }  
     else{
+        
         try {
-            const user = await userSchema.findByIdAndUpdate(
-                req.params.id,
-                {
-                    $addToSet:{invitationlist:req.body.id}
-                },
-                {
-                    new: true
-                }
-            );
-            res.status(200).send(user);
-        } catch {
-            err=> res.status(500).send(err.message);
+            const user = await userSchema.findById(req.params.id);
+            if(!(user.friendlist).includes(req.body.id)){
+                await userSchema.findByIdAndUpdate(
+                    req.params.id,
+                    {
+                        $addToSet:{invitationlist:req.body.id}
+                    },
+                    {
+                        new: true
+                    }
+                );
+                res.status(200).send('invitation successfuly sent');
+            }
+            else{
+                throw new Error('request not accepted');
+            }
+        } catch (error){
+            res.status(500).send(error.message);
+        }    
+    }  
+}
+module.exports.acceptInvitation = async(req,res)=>{
+    //on parametre on pass id de la personne à accepter
+    //on body l'id de la personne qui l'invite
+    if(!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.id)){
+        res.status(400).send('Unkown Id : ');
+    }  
+    else{
+        try {
+            const user = await userSchema.findById(req.body.id);
+            if((user.invitationlist).includes(req.params.id)){
+                const userToAccept = await userSchema.findByIdAndUpdate(
+                    req.body.id,
+                    {
+                        $addToSet:{friendlist:req.params.id},
+                        $pull:{invitationlist:req.params.id}
+                    },
+                    {
+                        new: true
+                    }
+                );
+                const userToInvite = await userSchema.findByIdAndUpdate(
+                    req.params.id,
+                    {
+                        $addToSet:{friendlist:req.body.id}
+                    },
+                    {
+                        new: true
+                    }
+                );
+                res.status(200).send("user accepted");
+            }
+            else{
+                throw new Error('request not accepted');
+            }
+        } catch(error) {
+            res.status(500).send(error.message);
         }    
     }  
 }

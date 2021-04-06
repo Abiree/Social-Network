@@ -11,9 +11,7 @@ router.post('/signup',userCont.signUp);
 //put
 router.put('/:id', userCont.updateUser);
 //patch
-router.patch('/friends/:id',(req,res)=>{
-
-});
+router.patch('/friends/:id',userCont.acceptInvitation);
 router.patch('/invitations/:id',userCont.sendInvitation);
 //delete
 router.delete('/:id',userCont.deleteUser);
