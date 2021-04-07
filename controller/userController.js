@@ -89,8 +89,8 @@ module.exports.sendInvitation = async(req,res)=>{
     else{
         
         try {
-            const user = await userSchema.findById(req.params.id);
-            if(!(user.friendlist).includes(req.body.id)){
+            const user = await userSchema.findById(req.body.id);
+            if(!(user.friendlist).includes(req.params.id)){
                 await userSchema.findByIdAndUpdate(
                     req.params.id,
                     {
