@@ -163,7 +163,6 @@ module.exports.acceptInvitation = async(req,res)=>{
 module.exports.signIn = async (req,res) => {
    
     const {email,password}=req.body;
-    console.log(email);
     try{
         const user = await userSchema.login(email,password);
         const token = createToken(user._id);
@@ -173,8 +172,4 @@ module.exports.signIn = async (req,res) => {
     catch(err){
         res.status(400).send(err.message);
     }
-}
-
-module.exports.logout = async (req,res) => {
-
 }
