@@ -6,8 +6,10 @@ const userCont = require('../../controller/userController');
 //get
 router.get('/',userCont.getAllUsers);
 router.get('/:id', userCont.getUser);
+router.get('/logout',userCont.logout)
 //post
 router.post('/signup',userCont.signUp);
+router.post('/singin',userCont.signIn);
 //put
 router.put('/:id', userCont.updateUser);
 //patch

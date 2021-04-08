@@ -1,5 +1,13 @@
 const userSchema = require('../models/user');
 const ObjectId = require('mongoose').Types.ObjectId;
+const expire = 4 * 24 * 60 * 60 * 1000 ;//4j
+const jwt = require('jsonwebtoken');
+//creer un Token
+const createToken = (id) =>{
+    return jwt.sign({id}, process.env.TOKEN_SECRET,{
+        expiresIn: expire //Le temps d'expiration du token
+    })
+};
 
 module.exports.signUp = async (req,res) => {
     console.log(req.body);
@@ -148,4 +156,25 @@ module.exports.acceptInvitation = async(req,res)=>{
             res.status(500).send(error.message);
         }    
     }  
+}
+
+
+
+module.exports.signIn = async (req,res) => {
+   
+    const {email,password}=req.body;
+    console.log(email);
+    try{
+        const user = await userSchema.login(email,password);
+        const token = createToken(user._id);
+        res.cookie('jwt',token,{httpOnly:true,maxAge:expire});
+        res.status(200).json({user:user._id});
+    }
+    catch(err){
+        res.status(400).send(err.message);
+    }
+}
+
+module.exports.logout = async (req,res) => {
+
 }
