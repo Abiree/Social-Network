@@ -1,12 +1,20 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 require('dotenv').config({path:'./config/.env'});
-const users = require('./routes/api/users.routes')
+const {checkUser,requireAuth} = require('./middleware/auth.middleware')
+const users = require('./routes/api/users.routes');
 // init express
 const app = express();
 // bodyparser middleware
 app.use(bodyParser.json());
+app.use(cookieParser());
+//jwt (chaque fois qu'il y a une requet * cad n'import quelle requête on doit vérifier si le user dispose d'un token)
+app.get('*', checkUser);
+app.get('/jwtid',requireAuth,(req,res)=>{
+    res.status(200).send(res.locals.user._id);
+});
 //db config
 const db = require('./config/keys').mongoURI;
 //connect to DB

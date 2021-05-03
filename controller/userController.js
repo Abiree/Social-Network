@@ -2,6 +2,7 @@ const userSchema = require('../models/user');
 const ObjectId = require('mongoose').Types.ObjectId;
 const jwt = require('jsonwebtoken');
 require('dotenv').config({path:'./config/.env'});
+const {registerErrors,loginErrors} = require('../utils/errors.utils')
 
 module.exports.getAllUsers = async(req,res)=>{
     try{
@@ -155,7 +156,8 @@ module.exports.register = async (req,res) => {
         const user = await userSchema.create({pseudo,email,password});
         res.status(201).json({user});
     }catch{
-        (err)=>res.status(400).send({err});
+        const errors = registerErrors(err);
+        (err)=>res.status(400).send({errors});
     }
 }
 
@@ -168,6 +170,7 @@ module.exports.login = async (req,res)=>{
         res.cookie('jwt',token,{httpOnly:true , maxAge:maxAge });
         res.status(200).json({user:user._id})
     }catch(err){
+        const errors = loginErrors(err);
         res.status(400).json(err)
     }
 }
