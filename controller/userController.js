@@ -1,16 +1,7 @@
 const userSchema = require('../models/user');
 const ObjectId = require('mongoose').Types.ObjectId;
-
-module.exports.signUp = async (req,res) => {
-    console.log(req.body);
-    const {pseudo,email,password}=req.body;
-    try{
-        const user = await userSchema.create({pseudo,email,password});
-        res.status(201).json({user});
-    }catch{
-        (err)=>res.status(400).send({err});
-    }
-}
+const jwt = require('jsonwebtoken');
+require('dotenv').config({path:'./config/.env'});
 
 module.exports.getAllUsers = async(req,res)=>{
     try{
@@ -148,4 +139,41 @@ module.exports.acceptInvitation = async(req,res)=>{
             res.status(500).send(error.message);
         }    
     }  
+}
+
+const maxAge = 3 * 24 * 60 * 60 * 1000;
+const createToken =(id)=>{
+    return jwt.sign({id},process.env.TOKEN_SECRET , {
+        expiresIn: maxAge
+    })
+};
+
+module.exports.register = async (req,res) => {
+    console.log(req.body);
+    const {pseudo,email,password}=req.body;
+    try{
+        const user = await userSchema.create({pseudo,email,password});
+        res.status(201).json({user});
+    }catch{
+        (err)=>res.status(400).send({err});
+    }
+}
+
+module.exports.login = async (req,res)=>{
+    
+    const {email , password } = req.body;
+    try{
+        const user = await userSchema.login(email , password);
+        const token = createToken(user._id);
+        res.cookie('jwt',token,{httpOnly:true , maxAge:maxAge });
+        res.status(200).json({user:user._id})
+    }catch(err){
+        res.status(400).json(err)
+    }
+}
+
+module.exports.logout = (req,res)=>{
+    console.log("method invocked")
+    res.clearCookie('jwt', '', { maxAge: 1});
+    res.redirect('/');
 }

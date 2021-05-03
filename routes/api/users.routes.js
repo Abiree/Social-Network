@@ -3,11 +3,13 @@ const router = express.Router();
 //include controller
 const userCont = require('../../controller/userController');
 //routes
+//auth 
+router.post('/register',userCont.register);
+router.post('/login',userCont.login);
+router.get('/logout',userCont.logout);
 //get
 router.get('/',userCont.getAllUsers);
 router.get('/:id', userCont.getUser);
-//post
-router.post('/signup',userCont.signUp);
 //put
 router.put('/:id', userCont.updateUser);
 //patch
