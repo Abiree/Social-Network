@@ -4,15 +4,18 @@
  module.exports.checkUser = (req,res,next) => {
     const token = req.cookies.jwt;
     if(token){
+        console.log("hehe");
         jwt.verify(token, process.env.TOKEN_SECRET,async (err,decodedToken)=>{
             if(err){
+                console.log("hehe2");
                 res.locals.user = null;
                 res.cookie('jwt','',{maxAge: 1});
                 next();
             }
             else{
-                let user = await userSchema.findById(decodedToken);
-                res.local.user = user;
+                console.log("hehe3");
+                let user = await userSchema.findById(decodedToken.id);
+                res.locals.user = user;
                 console.log(user);
                 next();
             }

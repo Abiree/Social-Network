@@ -155,9 +155,9 @@ module.exports.register = async (req,res) => {
     try{
         const user = await userSchema.create({pseudo,email,password});
         res.status(201).json({user});
-    }catch{
+    }catch(err){
         const errors = registerErrors(err);
-        (err)=>res.status(400).send({errors});
+        res.status(400).send({errors});
     }
 }
 
@@ -171,7 +171,7 @@ module.exports.login = async (req,res)=>{
         res.status(200).json({user:user._id})
     }catch(err){
         const errors = loginErrors(err);
-        res.status(400).json(err)
+        res.status(400).json(errors)
     }
 }
 
