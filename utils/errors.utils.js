@@ -24,3 +24,16 @@ module.exports.loginErrors = (err)=>{
     if(err.message.includes("password")) errors.password = "mot de passe incorrecte";
     return errors;
 }
+
+//show error of uploading file 
+module.exports.uploadErrors = (err) => {
+  let errors = { format: '', maxSize: ""};
+
+  if (err.message.includes('invalid file'))
+    errors.format = "Format incompatabile";
+
+  if (err.message.includes('max size'))
+    errors.maxSize = "Le fichier dépasse 800ko";
+
+  return errors
+}
