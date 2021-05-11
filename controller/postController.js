@@ -16,6 +16,21 @@ module.exports.readPost = (req, res) => {
     .sort({ createdAt: -1 });
 };
 
+//lire des posts pour un utilisateur
+module.exports.readPostByUser = async(req, res) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).send("Unkown Id : " + req.params.id);
+  } else {
+    const post = await postSchema.find({"posterId":req.params.id});
+    postSchema
+      .find((err, docs) => {
+        if (!err) res.send(post);
+        else console.log("Error to get data : " + err);
+      })
+      .sort({ createdAt: -1 });
+  }
+};
+
 // creer un post
 
 module.exports.createPost = async (req, res) => {
@@ -39,9 +54,7 @@ module.exports.createPost = async (req, res) => {
 
     await pipeline(
       req.file.stream,
-      fs.createWriteStream(
-        `${__dirname}/../uploads/posts/${fileName}`
-      )
+      fs.createWriteStream(`${__dirname}/../uploads/posts/${fileName}`)
     );
   }
   const newPost = new postSchema({
@@ -166,49 +179,49 @@ module.exports.commentPost = (req, res) => {
 //modifier un poste
 module.exports.editCommentPost = (req, res) => {
   if (!ObjectId.isValid(req.params.id))
-  return res.status(400).send("ID unknown : " + req.params.id);
+    return res.status(400).send("ID unknown : " + req.params.id);
 
-try {
-  return postSchema.findById(req.params.id, (err, docs) => {
-    const theComment = docs.comments.find((comment) =>
-      comment._id.equals(req.body.commentId)
-    );
+  try {
+    return postSchema.findById(req.params.id, (err, docs) => {
+      const theComment = docs.comments.find((comment) =>
+        comment._id.equals(req.body.commentId)
+      );
 
-    if (!theComment) return res.status(404).send("Comment not found");
-    theComment.text = req.body.text;
+      if (!theComment) return res.status(404).send("Comment not found");
+      theComment.text = req.body.text;
 
-    return docs.save((err) => {
-      if (!err) return res.status(200).send(docs);
-      return res.status(500).send(err);
+      return docs.save((err) => {
+        if (!err) return res.status(200).send(docs);
+        return res.status(500).send(err);
+      });
     });
-  });
-} catch (err) {
-  return res.status(400).send(err);
-}
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 };
 
 //supprimer un commentaire
 module.exports.deleteCommentPost = (req, res) => {
   if (!ObjectId.isValid(req.params.id))
-  return res.status(400).send("ID unknown : " + req.params.id);
+    return res.status(400).send("ID unknown : " + req.params.id);
 
-try {
-  return postSchema.findByIdAndUpdate(
-    req.params.id,
-    {
-      $pull: {
-        comments: {
-          _id: req.body.commentId,
+  try {
+    return postSchema.findByIdAndUpdate(
+      req.params.id,
+      {
+        $pull: {
+          comments: {
+            _id: req.body.commentId,
+          },
         },
       },
-    },
-    { new: true },
-    (err, docs) => {
-      if (!err) return res.send(docs);
-      else return res.status(400).send(err);
-    }
-  );
-} catch (err) {
-  return res.status(400).send(err);
-}
+      { new: true },
+      (err, docs) => {
+        if (!err) return res.send(docs);
+        else return res.status(400).send(err);
+      }
+    );
+  } catch (err) {
+    return res.status(400).send(err);
+  }
 };

@@ -7,6 +7,8 @@ const multer = require("multer");
 const upload = multer();
 //get post
 router.get('/', postCont.readPost);
+//get post by id of user
+router.get('/:id', postCont.readPostByUser);
 //post
 router.post('/', upload.single("file"), postCont.createPost);
 //update post
