@@ -4,7 +4,7 @@ const { promisify } = require("util");
 const pipeline = promisify(require("stream").pipeline);
 const { uploadErrors } = require("../utils/errors.utils");
 
-//ypload image avatar for user
+//upload image avatar for user
 module.exports.uploadProfil = async (req, res) => {
   try {
     //Verification de type de fichier et s'assure qu'il s'agit d"une image
@@ -29,7 +29,7 @@ module.exports.uploadProfil = async (req, res) => {
   try {
     await userSchema.findByIdAndUpdate(
       req.body.userId,
-      { $set: { avatar: "./uploads/avatar/" + fileName } },
+      { $set: { avatar: "/avatar/" + fileName } },
       { new: true, upsert: true, setDefaultsOnInsert: true },
       (err, docs) => {
         if (!err) return res.send(docs);

@@ -6,6 +6,7 @@ require('dotenv').config({path:'./config/.env'});
 const {checkUser,requireAuth} = require('./middleware/auth.middleware')
 const users = require('./routes/api/users.routes');
 const posts = require('./routes/api/posts.routes');
+
 //Autorisation les requetes pour CLIENTS_URL
 const cors = require('cors');
 const corsOptions = {
@@ -43,6 +44,9 @@ mongoose.connect(db,{
 //routes
 app.use('/api/users',users);
 app.use('/api/posts',posts);
+//Access to folder image
+app.use('/uploads/avatar', express.static(process.cwd() + '/uploads/avatar'))
+app.use('/uploads/posts', express.static(process.cwd() + '/uploads/posts'))
 //listen to port
 const port = process.env.PORT
 app.listen(port , ()=>console.log(`server listening on ${port}`));
