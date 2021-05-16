@@ -1,9 +1,19 @@
 const express = require('express');
+//importation de mongoose
 const mongoose = require('mongoose');
+//importation de body-parser
 const bodyParser = require('body-parser');
+//importation de cookieParser
 const cookieParser = require('cookie-parser');
+//importation de socketio
+const socketio = require("socket.io");
+//importation et utilisation de dotenv
 require('dotenv').config({path:'./config/.env'});
-const {checkUser,requireAuth} = require('./middleware/auth.middleware')
+//middleware de l'authentification
+const {checkUser,requireAuth} = require('./middleware/auth.middleware');
+//middleware de socket
+const {connection} = require('./middleware/socket.middleware');
+//importation des routes
 const users = require('./routes/api/users.routes');
 const posts = require('./routes/api/posts.routes');
 //const chatRoomRouter = require("./routes/api/chatRoom.routes");
@@ -20,6 +30,9 @@ const corsOptions = {
  
 // init express
 const app = express();
+// init our socket 
+const httpServer = require("http").createServer(app);
+const io = socketio(httpServer).sockets;
 //autorisation des requetes
 app.use(cors(corsOptions));
 // bodyparser middleware
@@ -45,10 +58,23 @@ mongoose.connect(db,{
 app.use('/api/users',users);
 app.use('/api/posts',posts);
 //Access to folder image
-app.use('/uploads/avatar', express.static(process.cwd() + '/uploads/avatar'))
-app.use('/uploads/posts', express.static(process.cwd() + '/uploads/posts'))
-app.use('/default', express.static(process.cwd() + '/default'))
+app.use('/uploads/avatar', express.static(process.cwd() + '/uploads/avatar'));
+app.use('/uploads/posts', express.static(process.cwd() + '/uploads/posts'));
+app.use('/default', express.static(process.cwd() + '/default'));
+//Socket middleware invocation 
+connection(io);
+/*-----------------------test-----------------------------------
+const IO = require('socket.io-client');
+const socket = IO('http://localhost:5000',{
+    forceNew : true,
+});
+socket.on('connection',()=>{console.log('connected')});
+socket.emit('getUsers');
+socket.on('getAllUsers',(users)=>{
+    console.log(users);
+})
+----------------------------------------------------------------*/
 //listen to port
 const port = process.env.PORT
-app.listen(port , ()=>console.log(`server listening on ${port}`));
+httpServer.listen(port , ()=>console.log(`server listening on ${port}`));
 
