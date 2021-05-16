@@ -34,6 +34,7 @@ module.exports.readPostByUser = async(req, res) => {
 // creer un post
 
 module.exports.createPost = async (req, res) => {
+  
   let fileName;
 
   if (req.file !== null) {
@@ -57,6 +58,7 @@ module.exports.createPost = async (req, res) => {
       fs.createWriteStream(`${__dirname}/../uploads/posts/${fileName}`)
     );
   }
+  
   const newPost = new postSchema({
     posterId: req.body.posterId,
     message: req.body.message,

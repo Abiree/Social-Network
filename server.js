@@ -6,7 +6,7 @@ require('dotenv').config({path:'./config/.env'});
 const {checkUser,requireAuth} = require('./middleware/auth.middleware')
 const users = require('./routes/api/users.routes');
 const posts = require('./routes/api/posts.routes');
-
+//const chatRoomRouter = require("./routes/api/chatRoom.routes");
 //Autorisation les requetes pour CLIENTS_URL
 const cors = require('cors');
 const corsOptions = {
@@ -47,6 +47,7 @@ app.use('/api/posts',posts);
 //Access to folder image
 app.use('/uploads/avatar', express.static(process.cwd() + '/uploads/avatar'))
 app.use('/uploads/posts', express.static(process.cwd() + '/uploads/posts'))
+app.use('/default', express.static(process.cwd() + '/default'))
 //listen to port
 const port = process.env.PORT
 app.listen(port , ()=>console.log(`server listening on ${port}`));
