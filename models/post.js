@@ -18,6 +18,11 @@ const postSchema = new Schema(
     video: {
       type: String,
     },
+    time : {
+        type: String,
+        required :true,
+        default : Date.now
+    },
     likers: {
       type: [String],
       required: true,

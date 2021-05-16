@@ -17,6 +17,7 @@ router.get("/", userCont.getAllUsers);
 router.get("/:id", userCont.getUser);
 //put
 router.put("/:id", userCont.updateUser);
+router.put("/status/:id",userCont.updateUserStatus);
 //patch
 router.patch("/friends/:id", userCont.acceptInvitation);
 router.patch("/invitations/:id", userCont.sendInvitation);

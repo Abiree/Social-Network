@@ -3,14 +3,15 @@
 
  module.exports.checkUser = (req,res,next) => {
     const token = req.cookies.jwt;
+    console.log(token);
     if(token){
-        
         jwt.verify(token, process.env.TOKEN_SECRET,async (err,decodedToken)=>{
             if(err){
                 
                 res.locals.user = null;
                 res.cookie('jwt','',{maxAge: 1});
-                next();
+                res.status(400).send("Bad Token");
+                
             }
             else{
                 
@@ -18,12 +19,13 @@
                 res.locals.user = user;
                 console.log(user);
                 next();
+              
             }
         })
     }
     else{
         res.locals.user = null;
-        next();
+        res.status(400).send("No Token");
     }
  }
 

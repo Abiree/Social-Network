@@ -29,7 +29,7 @@ module.exports.getUser = async(req,res)=>{
 }
 
 module.exports.updateUser = async(req,res)=>{
-    const {biographie,avatar} = req.body;
+    const {biographie,avatar,firstName,lastName} = req.body;
     if(!ObjectId.isValid(req.params.id)){
         res.status(400).send('Unkown Id : '+req.params.id);
     } 
@@ -41,7 +41,9 @@ module.exports.updateUser = async(req,res)=>{
                 },
                 {
                     biographie : biographie,
-                    avatar : avatar
+                    avatar : avatar,
+                    firstName: firstName,
+                    lastName : lastName
                 },
                 {
                     new : true
@@ -54,6 +56,30 @@ module.exports.updateUser = async(req,res)=>{
     }
 }
 
+module.exports.updateUserStatus=async(req,res)=>{
+    const {online} = req.body;
+    if(!ObjectId.isValid(req.params.id)){
+        res.status(400).send('Unkown Id : '+req.params.id);
+    } 
+    else{
+        try{
+            await userSchema.findOneAndUpdate(
+                {
+                    _id : req.params.id,
+                },
+                {
+                    online : online,
+                },
+                {
+                    new : true
+                }
+            )
+            res.status(200).json({message:'status updated'});
+        }catch{
+            err => res.status(500).send(err.message);
+        }
+    }
+}
 module.exports.deleteUser = async(req,res)=>{
     if(!ObjectId.isValid(req.params.id)){
         res.status(400).send('Unkown Id :');
@@ -150,10 +176,10 @@ const createToken =(id)=>{
 };
 
 module.exports.register = async (req,res) => {
-    console.log(req.body);
-    const {pseudo,email,password}=req.body;
+   // console.log(req.body);
+    const {pseudo,firstName,lastName,email,password}=req.body;
     try{
-        const user = await userSchema.create({pseudo,email,password});
+        const user = await (await userSchema.create({pseudo,firstName,lastName,email,password}));
         res.status(201).json({user});
     }catch(err){
         const errors = registerErrors(err);

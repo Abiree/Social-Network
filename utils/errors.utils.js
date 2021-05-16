@@ -1,8 +1,12 @@
 module.exports.registerErrors = (err) => {
-    let errors = { pseudo: "", email: "", password: "" };
+    let errors = { pseudo: "", firstName:"",lastName:"",email: "", password: "" };
 
     if (err.message.includes("pseudo"))
-      errors.pseudo = "Pseudo incorrect ou déjà pris";
+      errors.pseudo = "Pseudo incorrect ";
+      if (err.message.includes("firstName"))
+      errors.firstName = "FirstName incorrect ";
+      if (err.message.includes("lastName"))
+      errors.lastName = "LastName incorrect ";
   
     if (err.message.includes("email")) errors.email = "Email incorrect";
   

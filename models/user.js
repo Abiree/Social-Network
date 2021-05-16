@@ -12,6 +12,22 @@ const userSchema = new Schema({
         unique:true,
         trim : true 
     },
+    firstName:{
+        type:String,
+        required:true,
+        minlength:5,
+        maxlength:20,
+        trim : true ,
+       
+    },
+    lastName:{
+        type:String,
+        required:true,
+        minlength:5,
+        maxlength:20,
+        trim : true ,
+   
+    },
     email:{
         type:String,
         required:true,
@@ -34,6 +50,10 @@ const userSchema = new Schema({
     avatar:{
         type : String,
         default: "/default/user.png"
+    },
+    online:{
+        type : Boolean,
+        default: false
     },
     friendlist:{
         type : [String]
