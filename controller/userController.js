@@ -179,7 +179,7 @@ module.exports.register = async (req,res) => {
    // console.log(req.body);
     const {pseudo,firstName,lastName,email,password}=req.body;
     try{
-        const user = await (await userSchema.create({pseudo,firstName,lastName,email,password}));
+        const user = await userSchema.create({pseudo,firstName,lastName,email,password});
         res.status(201).json({user});
     }catch(err){
         const errors = registerErrors(err);
