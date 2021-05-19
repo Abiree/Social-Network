@@ -63,7 +63,7 @@ app.use('/uploads/posts', express.static(process.cwd() + '/uploads/posts'));
 app.use('/default', express.static(process.cwd() + '/default'));
 //Socket middleware invocation 
 connection(io);
-/*-----------------------test-----------------------------------*/
+/*-----------------------test-----------------------------------
 const IO = require('socket.io-client');
 const socket = IO('http://localhost:5000',{
     forceNew : true,
@@ -74,11 +74,30 @@ socket.on('getAllUsers',(users)=>{
     //console.log(users);
 });
 const chat = {
-    receiverID : "606c3db3c6e6831fe8512ca0",
-    senderID : "606b76b7e3e0611c0ce58ab0",
+    receiverID : "606b76b7e3e0611c0ce58ab0",
+    senderID : "606c3db3c6e6831fe8512ba0",
 }
 socket.emit('startUniqueChat', chat);
-/*----------------------------------------------------------------*/
+const room = {
+    roomID : "hihihi"
+}
+
+socket.emit("joinTwoUsers",(room), ({roomID})=>{
+    console.log(roomID)
+});
+
+const message = {
+    roomID : "hihihi",
+    senderID : "606c3db3c6e6831fe8512ca0",
+    receiverID : "606b76b7e3e0611c0ce58ab0",
+    composeMsg : {
+        time : "10h15min",
+        message : "hello abire"
+    }
+}
+
+socket.emit('sendTouser', message);
+----------------------------------------------------------------*/
 //listen to port
 const port = process.env.PORT
 httpServer.listen(port , ()=>console.log(`server listening on ${port}`));
