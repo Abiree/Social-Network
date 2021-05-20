@@ -9,7 +9,7 @@
             if(err){
                 res.locals.user = null;
                 res.cookie('jwt','',{maxAge: 1});
-                res.status(400).send("Bad Token");
+                
                 next();
             }
             else{
@@ -24,7 +24,7 @@
     }
     else{
         res.locals.user = null;
-        res.status(400).send("No Token");
+        
         next();
     }
  }
