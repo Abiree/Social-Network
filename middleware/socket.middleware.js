@@ -51,6 +51,21 @@ const addUser = ({receiverID,senderID},socket)=> {
     })
 }
 
+const loadMessages = (socket) => {
+	socket.on("sentMsgs" , ({ myID }, cb)=>{
+		Message.find({senderID : myID}).then((msgs)=>{
+			if (!msgs) return cb(null);
+			return cb(msgs);
+		});
+	});
+
+	socket.on("receivedMsgs", ({myID}, cb)=>{
+		Message.find({receiverID : myID }).then((msgs)=> {
+			if(!msgs) return cb(null);
+			return cb(msgs);
+		});
+	});
+};
 module.exports.connection = (io) => {
     io.on("connection", (socket)=>{
         console.log("socket connected from server");
@@ -59,6 +74,9 @@ module.exports.connection = (io) => {
             User.find({},(err, users)=>{
                 io.emit('getAllUsers',users);
             });
+	
+	        loadMessages(socket);
+
             socket.on("startUniqueChat",
                 ({receiverID,senderID},callback)=>{
                     addUser({receiverID,senderID},socket);
