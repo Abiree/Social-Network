@@ -41,7 +41,6 @@ module.exports.updateUser = async(req,res)=>{
                 },
                 {
                     biographie : biographie,
-                    avatar : avatar,
                     firstName: firstName,
                     lastName : lastName
                 },
