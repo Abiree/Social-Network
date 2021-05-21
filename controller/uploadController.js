@@ -29,7 +29,7 @@ module.exports.uploadProfil = async (req, res) => {
   try {
     await userSchema.findByIdAndUpdate(
       req.body.userId,
-      { $set: { avatar: "/avatar/" + fileName } },
+      { $set: { avatar: "/uploads/avatar/" + fileName } },
       { new: true, upsert: true, setDefaultsOnInsert: true },
       (err, docs) => {
         if (!err) return res.send(docs);

@@ -49,7 +49,7 @@ const userSchema = new Schema({
     },
     avatar:{
         type : String,
-        default: "/default/user.png"
+        default: "/uploads/avatar/user.png"
     },
     online:{
         type : Boolean,

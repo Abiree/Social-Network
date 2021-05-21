@@ -97,6 +97,12 @@ const message = {
 }
 
 socket.emit('sendTouser', message);
+
+//sent msj of senderID
+
+socket.emit('sentMsgs',{myID:"606c3db3c6e6831fe8512ca0"},(msgs)=>{console.log(msgs)});
+
+socket.emit('receivedMsgs',{myID:"606c3db3c6e6831fe8512ca0"},(msgs)=>{console.log(msgs)});
 ----------------------------------------------------------------*/
 //listen to port
 const port = process.env.PORT
