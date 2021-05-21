@@ -55,6 +55,7 @@ const loadMessages = (socket) => {
 	socket.on("sentMsgs" , ({ myID }, cb)=>{
 		Message.find({senderID : myID}).then((msgs)=>{
 			if (!msgs) return cb(null);
+            console.log("-------------------");
 			return cb(msgs);
 		});
 	});
