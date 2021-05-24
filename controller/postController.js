@@ -153,7 +153,7 @@ module.exports.unlikePost = async (req, res) => {
 module.exports.commentPost = (req, res) => {
   if (!ObjectId.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
-
+    console.log("halo");
   try {
     return postSchema.findByIdAndUpdate(
       req.params.id,
@@ -169,7 +169,7 @@ module.exports.commentPost = (req, res) => {
       },
       { new: true },
       (err, docs) => {
-        if (!err) return res.send(docs);
+        if (!err) return res.status(200).send(docs);
         else return res.status(400).send(err);
       }
     );
@@ -191,6 +191,7 @@ module.exports.editCommentPost = (req, res) => {
 
       if (!theComment) return res.status(404).send("Comment not found");
       theComment.text = req.body.text;
+      
 
       return docs.save((err) => {
         if (!err) return res.status(200).send(docs);

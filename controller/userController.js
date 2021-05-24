@@ -167,6 +167,39 @@ module.exports.acceptInvitation = async(req,res)=>{
     }  
 }
 
+module.exports.refuseInvitation = async(req,res)=>{
+    //on parametre on pass id de la personne à refuser
+    //on body l'id de la personne qui l'invite
+    if(!ObjectId.isValid(req.params.id) || !ObjectId.isValid(req.body.id)){
+        res.status(400).send('Unkown Id : ');
+    }  
+    else{
+        try {
+            const user = await userSchema.findById(req.body.id);
+            if((user.invitationlist).includes(req.params.id)){
+                const userToRefuse = await userSchema.findByIdAndUpdate(
+                    req.body.id,
+                    {
+                        $pull:{invitationlist:req.params.id}
+                    },
+                    {
+                        new: true
+                    }
+                );
+                res.status(200).send('invitation refused');
+                console.log("invitation refused");
+            }
+            else{
+                throw new Error('request not accepted');
+            }
+        } catch(error) {
+            res.status(500).send(error.message);
+        }    
+    }  
+}
+
+
+
 const maxAge = 3 * 24 * 60 * 60 * 1000;
 const createToken =(id)=>{
     return jwt.sign({id},process.env.TOKEN_SECRET , {
@@ -192,7 +225,7 @@ module.exports.login = async (req,res)=>{
     try{
         const user = await userSchema.login(email , password);
         const token = createToken(user._id);
-        res.cookie('jwt',token,{httpOnly:true , maxAge:maxAge });
+        res.cookie('jwt',token,{httpOnly:false , maxAge:maxAge });
         res.status(200).json({user:user._id})
     }catch(err){
         const errors = loginErrors(err);

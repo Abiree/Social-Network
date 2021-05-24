@@ -21,6 +21,7 @@ router.put("/status/:id",userCont.updateUserStatus);
 //patch
 router.patch("/friends/:id", userCont.acceptInvitation);
 router.patch("/invitations/:id", userCont.sendInvitation);
+router.patch("/refuseinv/:id", userCont.refuseInvitation);
 //delete
 router.delete("/:id", userCont.deleteUser);
 
