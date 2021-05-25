@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "test": "jest"
   },
   "author": "Chouaib&Abire",
   "license": "ISC",
@@ -27,6 +28,8 @@
     "validator": "^13.5.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "jest": "^27.0.1",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
   }
 }
