@@ -16,10 +16,10 @@ const app = express();
 //Autorisation les requetes pour CLIENTS_URL
 const cors = require('cors');
 const corsOptions = {
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-    'allowedHeaders': ['sessionId', 'Content-Type'],
-    'exposedHeaders': ['sessionId'],
+    origin: process.env.CLIENT_URL,  //request source permited
+    credentials: true,  //to allow exposing code to javascript
+    'allowedHeaders': ['sessionId', 'Content-Type'], 
+    'exposedHeaders': ['sessionId'],  //
     'methods': 'GET,HEAD,PUT,PATCH,POST,DELETE',
     'preflightContinue': false
   }
