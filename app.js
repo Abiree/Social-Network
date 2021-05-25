@@ -1,6 +1,8 @@
 //importation des routes
 const users = require('./routes/api/users.routes');
 const posts = require('./routes/api/posts.routes');
+const conversationRoute = require("./routes/api/conversation.routes");
+const messageRoute = require("./routes/api/message.routes");
 //importation de body-parser
 const bodyParser = require('body-parser');
 //importation de cookieParser
@@ -8,6 +10,7 @@ const cookieParser = require('cookie-parser');
 //middleware de l'authentification
 const {checkUser,requireAuth} = require('./middleware/auth.middleware');
 const express = require('express');
+
 // init express
 const app = express();
 //Autorisation les requetes pour CLIENTS_URL
@@ -31,6 +34,8 @@ app.get('/jwtid',requireAuth,(req,res)=>{
     res.status(200).send(res.locals.user._id);
 });
 //routes
+app.use("/api/conversations", conversationRoute);
+app.use("/api/messages", messageRoute);
 app.use('/api/users',users);
 app.use('/api/posts',posts);
 //Access to folder image

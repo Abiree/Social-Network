@@ -22,8 +22,6 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.3",
     "multer": "^2.0.0-rc.1",
-    "socket.io": "^4.1.1",
-    "socket.io-client": "^4.1.1",
     "uuid": "^8.3.2",
     "validator": "^13.5.2"
   },
