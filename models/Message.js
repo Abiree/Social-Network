@@ -1,31 +1,18 @@
 const mongoose = require("mongoose");
 
-const MessageSchema = new mongoose.Schema({
-    roomID : {
-        type : String,
-        required : true
+const MessageSchema = new mongoose.Schema(
+  {
+    conversationId: {
+      type: String,
     },
-    senderID : {
-        type : mongoose.Schema.Types.ObjectId,
-        required : true
+    sender: {
+      type: String,
     },
-    receiverID : {
-        type : mongoose.Schema.Types.ObjectId,
-        required : true
+    text: {
+      type: String,
     },
-    message : {
-        type : String,
-        required : true,
-        maxlength : 150
-    },
-    time : {
-        type: String,
-        required :true,
-        default : Date.now
-    }
-},
-{ 
-    timestamps: true 
-});
+  },
+  { timestamps: true }
+);
 
-module.exports = Message = mongoose.model('Message', MessageSchema);
+module.exports = mongoose.model("Message", MessageSchema);

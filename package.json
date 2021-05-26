@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "server": "nodemon server.js"
+    "server": "nodemon server.js",
+    "test": "jest"
   },
   "author": "Chouaib&Abire",
   "license": "ISC",
@@ -21,12 +22,14 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.3",
     "multer": "^2.0.0-rc.1",
-    "socket.io": "^4.1.1",
-    "socket.io-client": "^4.1.1",
     "uuid": "^8.3.2",
     "validator": "^13.5.2"
   },
   "devDependencies": {
-    "nodemon": "^2.0.7"
+    "jest": "^27.0.1",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3",
+    "socket.io": "^4.1.2",
+    "socket.io-client": "^4.1.2"
   }
 }

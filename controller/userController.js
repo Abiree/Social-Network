@@ -29,7 +29,7 @@ module.exports.getUser = async(req,res)=>{
 }
 
 module.exports.updateUser = async(req,res)=>{
-    const {biographie,avatar,firstName,lastName} = req.body;
+    const {biographie,firstName,lastName} = req.body;
     if(!ObjectId.isValid(req.params.id)){
         res.status(400).send('Unkown Id : '+req.params.id);
     } 
